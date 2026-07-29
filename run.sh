@@ -20,21 +20,21 @@ else
     OS="unknown"
 fi
 
-echo "[INFO] Detected OS: $OS"
+echo "[*] Detected OS: $OS"
 
-echo "[INFO] Installing Lua 5.1..."
+echo "[*] Installing Lua 5.1..."
 
 case $OS in
     linux)
         if command -v apt-get &> /dev/null; then
-            sudo apt-get update
-            sudo apt-get install -y lua5.1 luac
+            apt-get update
+            apt-get install -y lua5.1 luac
         elif command -v dnf &> /dev/null; then
-            sudo dnf install -y lua luac
+            dnf install -y lua luac
         elif command -v yum &> /dev/null; then
-            sudo yum install -y lua luac
+            yum install -y lua luac
         elif command -v pacman &> /dev/null; then
-            sudo pacman -S lua
+            pacman -S lua
         else
             echo "[!] Could not detect package manager"
             exit 1
@@ -45,41 +45,41 @@ case $OS in
         ;;
     macos)
         if ! command -v brew &> /dev/null; then
-            echo "[ERROR] Homebrew not found. Install from https://brew.sh"
+            echo "[!] Homebrew not found. Install from https://brew.sh"
             exit 1
         fi
         brew install lua@5.1
         ;;
     windows)
-        echo "[INFO] Windows detected. Download Lua from:"
+        echo "[!] Windows detected. Download Lua from:"
         echo "    https://sourceforge.net/projects/luabinaries/"
         echo "    Extract and add to PATH"
         exit 1
         ;;
     *)
-        echo "[ERROR] Unknown OS. Please install Lua 5.1 manually"
+        echo "[!] Unknown OS. Please install Lua 5.1 manually"
         exit 1
         ;;
 esac
 
-echo "[INFO] Lua installed"
+echo "[✓] Lua installed"
 
 if ! command -v luac &> /dev/null; then
     echo "[!] luac still not found in PATH"
     exit 1
 fi
-echo "[INFO] luac found: $(which luac)"
+echo "[✓] luac found: $(which luac)"
 
-echo "[INFO] Installing dependencies..."
+echo "[*] Installing dependencies..."
 if command -v pnpm &> /dev/null; then
     pnpm install
 elif command -v npm &> /dev/null; then
     npm install
 else
-    echo "[ERROR] pnpm/npm not found"
+    echo "[!] pnpm/npm not found"
     exit 1
 fi
-echo "[INFO] Dependencies installed"
+echo "[✓] Dependencies installed"
 
-echo "[INFO] Starting server..."
+echo "[*] Starting server..."
 node server.js
