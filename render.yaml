@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: lonely-obfuscator
+    env: node
+    buildCommand: apt-get update && apt-get install -y lua5.1 luac && npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
